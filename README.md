@@ -512,7 +512,7 @@ O monitoramento de experimentos é crucial para o debugging eficaz em machine le
 
 ### Weights & Biases (W&B)
 
-[Weights & Biases (W&B)]([https://wandb.ai/site/) é outra plataforma popular para rastreamento de experimentos de machine learning, visualização e colaboração. Enquanto MLflow é frequentemente elogiado por sua natureza open-source e flexibilidade de auto-hospedagem, W&B é conhecido por sua interface de usuário rica, facilidade de uso e recursos de colaboração robustos, geralmente oferecido como um serviço SaaS (Software as a Service), embora também possua opções de implantação local.
+[Weights & Biases (W&B)](https://wandb.ai/site/) é outra plataforma popular para rastreamento de experimentos de machine learning, visualização e colaboração. Enquanto MLflow é frequentemente elogiado por sua natureza open-source e flexibilidade de auto-hospedagem, W&B é conhecido por sua interface de usuário rica, facilidade de uso e recursos de colaboração robustos, geralmente oferecido como um serviço SaaS (Software as a Service), embora também possua opções de implantação local.
 
 **Principais Funcionalidades do W&B:**
 
