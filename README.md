@@ -2,6 +2,11 @@
 
 (Em construção)
 
+Ciclo de vida de MLOps:
+
+![ITS](images/ml lifecycle.drawio.png)
+
+
 *"A qualidade de um modelo de machine learning não é determinada apenas pelo seu desempenho final, mas pelo rigor do seu desenvolvimento e pela robustez da sua avaliação."*
 
 ---
@@ -28,9 +33,11 @@ O desenvolvimento de modelos de machine learning e sua avaliação offline são 
 
 Nesta aula, exploraremos as melhores práticas para selecionar baselines, modelar arquiteturas, treinar modelos de forma eficaz, monitorar experimentos para debugging, utilizar ferramentas de experimentação, selecionar hiperparâmetros, e realizar avaliações e calibrações rigorosas. Estas habilidades são fundamentais para qualquer profissional de MLOps que busca desenvolver soluções de machine learning confiáveis e de alto desempenho, seguindo o pipeline de MLOps.
 
+Uma outra visualização interessante sobre o ciclo de vida de MLOps pode ser chamada de "Pipeline de MLOps":
+
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                       Pipeline de MLOps                                            │
+│                                       Pipeline de MLOps                                           │
 └───────────────────────────────────────────────────────────────────────────────────────────────────┘
 
 ┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐     ┌───────────┐
