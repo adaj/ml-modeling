@@ -350,7 +350,7 @@ O monitoramento de experimentos é crucial para o debugging eficaz em machine le
 
 ### MLflow: Uma Plataforma Open-Source Abrangente para o Ciclo de Vida de ML
 
-MLflow é uma plataforma open-source projetada para gerenciar o ciclo de vida completo do machine learning. Ela se destaca por sua abordagem modular e foco na reprodutibilidade e gerenciamento de modelos em escala.
+(MLflow)[https://github.com/mlflow/mlflow] é uma plataforma open-source projetada para gerenciar o ciclo de vida completo do machine learning. Ela se destaca por sua abordagem modular e foco na reprodutibilidade e gerenciamento de modelos em escala.
 
 **Principais Componentes do MLflow Detalhados:**
 
@@ -512,7 +512,7 @@ MLflow é uma plataforma open-source projetada para gerenciar o ciclo de vida co
 
 ### Weights & Biases (W&B)
 
-Weights & Biases (W&B) é outra plataforma popular para rastreamento de experimentos de machine learning, visualização e colaboração. Enquanto MLflow é frequentemente elogiado por sua natureza open-source e flexibilidade de auto-hospedagem, W&B é conhecido por sua interface de usuário rica, facilidade de uso e recursos de colaboração robustos, geralmente oferecido como um serviço SaaS (Software as a Service), embora também possua opções de implantação local.
+(Weights & Biases (W&B))[https://wandb.ai/site/] é outra plataforma popular para rastreamento de experimentos de machine learning, visualização e colaboração. Enquanto MLflow é frequentemente elogiado por sua natureza open-source e flexibilidade de auto-hospedagem, W&B é conhecido por sua interface de usuário rica, facilidade de uso e recursos de colaboração robustos, geralmente oferecido como um serviço SaaS (Software as a Service), embora também possua opções de implantação local.
 
 **Principais Funcionalidades do W&B:**
 
@@ -575,7 +575,7 @@ Muitas vezes, a escolha também depende da preferência da equipe, do ecossistem
 
 ---
 
-## Tópico 6: Seleção de Hiperparâmetros (incluindo uma miniseção de curiosidade sobre AutoML)
+## Tópico 6: Seleção de Hiperparâmetros
 
 > *"A seleção de hiperparâmetros é a arte de encontrar a combinação mágica de configurações que desbloqueia o verdadeiro potencial do seu modelo. É um processo iterativo que exige paciência e estratégia."*
 
@@ -638,7 +638,7 @@ Ajustar hiperparâmetros manualmente pode ser tedioso e ineficiente. Estratégia
     *   **Como Funciona**: É uma abordagem mais inteligente que constrói um modelo probabilístico (geralmente um Processo Gaussiano) do mapeamento entre os hiperparâmetros e a métrica de desempenho. Usa este modelo para decidir quais hiperparâmetros experimentar em seguida, focando em regiões promissoras do espaço de busca.
     *   **Prós**: Geralmente mais eficiente que Grid Search e Random Search, exigindo menos avaliações do modelo para encontrar bons hiperparâmetros, especialmente para funções de avaliação caras.
     *   **Contras**: Mais complexo de implementar do zero (mas existem bibliotecas como Hyperopt, Optuna, Scikit-Optimize).
-    *   **Ferramentas**: Optuna, Hyperopt, Keras Tuner, W&B Sweeps.
+    *   **Ferramentas**: [Hyperopt](https://hyperopt.github.io/hyperopt/), Optuna, Keras Tuner, W&B Sweeps.
 
 ```
 ┌───────────────────────────────┐      ┌───────────────────────────────┐      ┌───────────────────────────────┐
@@ -649,7 +649,7 @@ Ajustar hiperparâmetros manualmente pode ser tedioso e ineficiente. Estratégia
 └───────────────────────────────┘      └───────────────────────────────┘      └───────────────────────────────┘
 ```
 
-### Miniseção de Curiosidade: AutoML (Automated Machine Learning)
+### Seleção de hiperparametros (e algoritmos) usando AutoML (Automated Machine Learning)
 
 AutoML leva a seleção de hiperparâmetros (e muitas outras etapas) a um novo nível, automatizando grande parte do pipeline de machine learning.
 
@@ -660,14 +660,14 @@ AutoML leva a seleção de hiperparâmetros (e muitas outras etapas) a um novo n
     *   Otimização automática de hiperparâmetros (HPO).
     *   Em alguns casos, até mesmo a geração de arquiteturas de redes neurais (Neural Architecture Search - NAS).
 *   **Objetivo**: Tornar o machine learning mais acessível a não especialistas, acelerar o desenvolvimento de modelos para especialistas e melhorar a performance e robustez dos modelos.
-*   **Ferramentas Populares**: Google AutoML (Vertex AI), Auto-sklearn, TPOT, H2O AutoML, AutoKeras.
+*   **Ferramentas Populares**: (Auto-sklearn)[https://automl.github.io/auto-sklearn/master/], Google AutoML (Vertex AI), TPOT, H2O AutoML, AutoKeras.
 *   **Considerações**: Embora poderoso, AutoML não é uma "bala de prata". A compreensão do problema, a qualidade dos dados e a interpretação dos resultados ainda são cruciais. Pode ser computacionalmente intensivo.
 
 > **Dica do artigo Lones (2021)**: "Do evaluate hyperparameters on a validation set" - Nunca use o conjunto de teste para otimização de hiperparâmetros. Isso levaria a uma estimativa otimista do desempenho do modelo em dados não vistos. Use sempre um conjunto de validação separado ou validação cruzada nos dados de treinamento.
 
 ---
 
-## Tópico 7: Avaliação Offline (confusion matrix, learning curves, cross-validation)
+## Tópico 7: Avaliação Offline
 
 > *"A avaliação offline rigorosa é a sua apólice de seguro contra surpresas desagradáveis em produção. É onde você valida se o seu modelo realmente aprendeu o que deveria."*
 
