@@ -95,10 +95,10 @@ Este quiz contém três questões de múltipla escolha de nível intermediário/
 ## Tópico 5: Apresentação e Exemplificação: MLflow e Weights & Biases
 
 1.  **Questão**: Qual a principal distinção e complementaridade entre os componentes "MLflow Projects" e "MLflow Models" no ciclo de vida de MLOps?
-    a)  MLflow Projects define o ambiente de execução e os pontos de entrada para treinar modelos, enquanto MLflow Models define um formato padrão para empacotar os modelos treinados para que possam ser usados em diversas ferramentas de downstream (inferência/deploy). Eles se complementam ao permitir que um Projeto MLflow produza um Modelo MLflow.
-    b)  MLflow Projects é usado para registrar modelos no Model Registry, enquanto MLflow Models é usado para rastrear métricas de treinamento.
-    c)  MLflow Projects é um formato para empacotar modelos, e MLflow Models é uma UI para visualizar experimentos.
-    d)  Ambos são formatos para empacotar código de treinamento, mas MLflow Projects é para Python e MLflow Models é para R.
+    a.  MLflow Projects define o ambiente de execução e os pontos de entrada para treinar modelos, enquanto MLflow Models define um formato padrão para empacotar os modelos treinados para que possam ser usados em diversas ferramentas de downstream (inferência/deploy). Eles se complementam ao permitir que um Projeto MLflow produza um Modelo MLflow.
+    b.  MLflow Projects é usado para registrar modelos no Model Registry, enquanto MLflow Models é usado para rastrear métricas de treinamento.
+    c.  MLflow Projects é um formato para empacotar modelos, e MLflow Models é uma UI para visualizar experimentos.
+    d. Ambos são formatos para empacotar código de treinamento, mas MLflow Projects é para Python e MLflow Models é para R.
 
 2.  **Questão**: Qual a importância crucial do versionamento e dos estágios (ex: Staging, Production) no "MLflow Model Registry" para o gerenciamento de modelos em um ambiente corporativo?
     a)  Permitem apenas armazenar diferentes modelos, mas não gerenciar seu ciclo de vida ou qualidade.
