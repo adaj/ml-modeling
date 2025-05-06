@@ -4,7 +4,7 @@
 
 Ciclo de vida de MLOps:
 
-![ITS](images/ml lifecycle.drawio.png)
+![Ciclo de vida de MLOps](images/ml_lifecycle.drawio.png)
 
 
 *"A qualidade de um modelo de machine learning não é determinada apenas pelo seu desempenho final, mas pelo rigor do seu desenvolvimento e pela robustez da sua avaliação."*
