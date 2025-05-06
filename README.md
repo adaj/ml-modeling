@@ -344,16 +344,120 @@ O monitoramento de experimentos é crucial para o debugging eficaz em machine le
 
 ---
 
-## Tópico 5: Apresentação e Exemplificação das Ferramentas MLflow e Weights & Biases (Continuação)
+## Tópico 5: Apresentação e Exemplificação das Ferramentas MLflow e Weights & Biases 
 
 > *"Ferramentas de rastreamento de experimentos como MLflow e Weights & Biases transformam o caótico processo de desenvolvimento de modelos em uma prática de engenharia organizada e reproduzível."*
 
-### MLflow: Uma Plataforma Open-Source Abrangente para o Ciclo de Vida de ML (Continuação)
+### MLflow: Uma Plataforma Open-Source Abrangente para o Ciclo de Vida de ML
 
-#### MLflow Models (Continuação)
+MLflow é uma plataforma open-source projetada para gerenciar o ciclo de vida completo do machine learning. Ela se destaca por sua abordagem modular e foco na reprodutibilidade e gerenciamento de modelos em escala.
 
-*   Carregar um modelo: `loaded_model = mlflow.pyfunc.load_model("runs:/<RUN_ID>/rf_model_estimators_100")` (para carregar a partir de uma execução específica) ou `loaded_model = mlflow.sklearn.load_model("models:/MyRegisteredModel/Production")` (para carregar a partir do Model Registry).
-*   O formato `MLmodel` facilita a implantação em diversas plataformas (ex: SageMaker, Azure ML, Kubernetes) e o serviço local (`mlflow models serve -m runs:/<RUN_ID>/model`).
+**Principais Componentes do MLflow Detalhados:**
+
+1.  **MLflow Tracking**: O coração da experimentação. Permite registrar e consultar:
+    *   **Parâmetros**: Hiperparâmetros do modelo, configurações de features, etc. (`mlflow.log_param()`, `mlflow.log_params()`)
+    *   **Métricas**: Resultados de avaliação (loss, acurácia, F1) ao longo do tempo ou ao final. (`mlflow.log_metric()`)
+    *   **Artefatos**: Qualquer arquivo de saída, como modelos serializados, gráficos de visualização, arquivos de dados de exemplo, ou logs. (`mlflow.log_artifact()`, `mlflow.log_figure()`, `mlflow.log_dict()`)
+    *   **Código Fonte**: Referências à versão do código (ex: commit Git) para reprodutibilidade.
+    *   **Tags**: Metadados customizáveis para organizar e filtrar execuções (`mlflow.set_tag()`).
+
+    As execuções (`runs`) são organizadas em **Experimentos**. Você pode ter execuções aninhadas (`nested runs`) para organizar processos complexos, como uma busca de hiperparâmetros onde cada tentativa é uma sub-execução.
+
+    ```python
+    import mlflow
+    import mlflow.sklearn
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.metrics import mean_squared_error
+    import numpy as np
+
+    # Simular dados
+    X_train = np.random.rand(100, 5)
+    y_train = np.random.rand(100)
+    X_test = np.random.rand(50, 5)
+    y_test = np.random.rand(50)
+
+    mlflow.set_experiment("Aula7_MLflow_Aprofundado")
+
+    with mlflow.start_run(run_name="Parent_Run_HyperparamSearch") as parent_run:
+        mlflow.log_param("optimizer_type", "RandomSearch")
+        mlflow.set_tag("project_phase", "Development")
+
+        best_mse = float(
+        best_params = None
+
+        for i, n_estimators_val in enumerate([50, 100, 150]):
+            with mlflow.start_run(run_name=f"Child_Run_Estimators_{n_estimators_val}", nested=True) as child_run:
+                params = {"n_estimators": n_estimators_val, "max_depth": 5 + i, "random_state": 42}
+                mlflow.log_params(params)
+                
+                model = RandomForestRegressor(**params)
+                model.fit(X_train, y_train)
+                predictions = model.predict(X_test)
+                mse = mean_squared_error(y_test, predictions)
+                mlflow.log_metric("mse", mse)
+                
+                # Logando o modelo treinado
+                mlflow.sklearn.log_model(model, f"rf_model_estimators_{n_estimators_val}")
+                
+                # Logando um artefato de exemplo (configuração)
+                config_dict = {"dataset_version": "v1.2", "feature_set": "basic"}
+                mlflow.log_dict(config_dict, "run_config.json")
+
+                if mse < best_mse:
+                    best_mse = mse
+                    best_params = params
+                    # Tag para a melhor execução filha dentro da pai
+                    mlflow.set_tag("is_best_child_config_so_far", "True") 
+        
+        # Logar os melhores resultados na execução pai
+        mlflow.log_metric("best_mse_from_search", best_mse)
+        if best_params:
+            mlflow.log_params({f"best_{k}": v for k, v in best_params.items()})
+
+    print(f"MLflow UI: Execute 'mlflow ui' no terminal onde os dados foram logados.")
+    ```
+    A **UI do MLflow** (`mlflow ui`) permite visualizar experimentos, comparar execuções (parâmetros, métricas, gráficos), e examinar artefatos. A busca suporta uma sintaxe poderosa (ex: `metrics.mse < 0.1 and params.n_estimators = '100'`).
+
+2.  **MLflow Projects**: Define um formato padrão para empacotar código de ciência de dados de forma reutilizável e reproduzível.
+    *   Um projeto é um diretório com código ou um repositório Git.
+    *   Pode conter um arquivo `MLproject` (YAML) que especifica o ambiente de software (ex: `conda.yaml`) e pontos de entrada (comandos a serem executados) com seus parâmetros.
+    *   **Exemplo `MLproject`**: 
+        ```yaml
+        name: Aula7_RF_Trainer
+
+        conda_env: conda.yaml
+
+        entry_points:
+          main:
+            parameters:
+              n_estimators: {type: int, default: 100}
+              max_depth: {type: int, default: 10}
+              data_path: {type: string, default: "./data/train.csv"}
+            command: "python train_model.py --n_estimators {n_estimators} --max_depth {max_depth} --data_path {data_path}"
+        ```
+    *   Executável com `mlflow run /path/to/project -P n_estimators=200`.
+
+3.  **MLflow Models**: Um formato padrão para empacotar modelos de machine learning que podem ser usados em diversas ferramentas de downstream.
+    *   Um modelo MLflow é um diretório contendo arquivos arbitrários, junto com um arquivo `MLmodel` (YAML) que define múltiplos "sabores" (flavors) em que o modelo pode ser visualizado/usado.
+    *   **Sabores Comuns**: `python_function` (genérico), `sklearn`, `pytorch`, `tensorflow`, `onnx`, `huggingface_transformer`.
+    *   **Exemplo `MLmodel` (para um modelo scikit-learn)**:
+        ```yaml
+        artifact_path: model_dir
+        flavors:
+          python_function:
+            loader_module: mlflow.sklearn
+            model_path: model.pkl
+            python_version: 3.8.10
+          sklearn:
+            pickled_model: model.pkl
+            sklearn_version: 1.0.2
+            serialization_format: cloudpickle
+        signature: # Opcional, mas recomendado: define o schema de entrada/saída
+          inputs: '[{"name": "feature1", "type": "double"}, ...]
+          outputs: '[{"type": "double"}]'
+        ```
+    *   Carregar um modelo: `loaded_model = mlflow.pyfunc.load_model("runs:/<RUN_ID>/rf_model_estimators_100")` (para carregar a partir de uma execução específica) ou `loaded_model = mlflow.sklearn.load_model("models:/MyRegisteredModel/Production")` (para carregar a partir do Model Registry).
+    *   O formato `MLmodel` facilita a implantação em diversas plataformas (ex: SageMaker, Azure ML, Kubernetes) e o serviço local (`mlflow models serve -m runs:/<RUN_ID>/model`).
 
 ```
 ┌───────────────────────────────────────────┐
@@ -371,7 +475,7 @@ O monitoramento de experimentos é crucial para o debugging eficaz em machine le
 
 ```
 
-4.  **MLflow Model Registry**: Um componente centralizado para gerenciar o ciclo de vida de modelos MLflow.
+1.  **MLflow Model Registry**: Um componente centralizado para gerenciar o ciclo de vida de modelos MLflow.
     *   Permite registrar modelos, versioná-los, anotar metadados e transitar modelos entre estágios (ex: `Staging`, `Production`, `Archived`).
     *   Fornece uma maneira de organizar e controlar os modelos que estão prontos para implantação.
     *   **Funcionalidades Chave**:
