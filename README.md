@@ -194,7 +194,7 @@ Principais aspectos do treinamento:
 *   **Escolha do Otimizador**: Algoritmos como SGD, Adam, RMSprop, cada um com seus próprios parâmetros (ex: learning rate).
 *   **Definição de Métricas de Avaliação**: Para monitorar o desempenho durante o treinamento (ex: acurácia, F1-score, R²).
 *   **Ajuste de Hiperparâmetros de Treinamento**: Como learning rate, batch size, número de épocas.
-*   **Regularização**: Técnicas para prevenir overfitting.
+*   **Regularização**: Penalização nos pesos, suavizando a borda de decisão, para prevenir overfitting.
 
 ### Análise dos Parâmetros da Função `.fit()` (Exemplo Keras/TensorFlow)
 
